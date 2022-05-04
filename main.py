@@ -1,5 +1,4 @@
-from flask import Flask
-from threading import Thread
+from flask import Flask, send_file
 import random
 
 app = Flask(__name__)
@@ -12,8 +11,16 @@ with open('jokes.txt') as file:
 def home():
   return { 'joke': random.choice(jokes) }
 
+@app.route('/txt')
+def plain():
+  return random.choice(jokes)
+
+@app.route('/docs')
+def docs():
+  return send_file('docs.html')
+
 def run():
   app.run(host='0.0.0.0',port=8080)
 
-t = Thread(target=run)
-t.start()
+if __name__ == "__main__":
+	run()
